@@ -26,7 +26,7 @@ DEBUG = True
 
 from socket import gethostname
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', gethostname(),
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', gethostname(),
                  os.environ.get('OPENSHIFT_APP_DNS')]
 
 # Application definition

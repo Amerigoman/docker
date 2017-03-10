@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    image: postgres
+  redis:
+    image: i386/redis
+  rabbitmq:
+    image: rabbitmq
+    environment:
+      - RABBITMQ_PASS=mypass
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  worker:
+    build: .
+    command: celery -A Jiller worker -l info
+    volumes:
+      - .:/code
+    links:
+      - db:db
+      - rabbitmq:rabbit
+      - redis:redis
