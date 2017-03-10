@@ -1,7 +1,5 @@
 version: '2'
 services:
-  db:
-    image: postgres
   redis:
     image: i386/redis
   rabbitmq:
@@ -18,14 +16,11 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-    depends_on:
-      - db
   worker:
     build: .
     command: celery -A Jiller worker -l info
     volumes:
       - .:/code
     links:
-      - db:db
       - rabbitmq:rabbit
       - redis:redis
